@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Navigation | Macro Nepal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d3e50;
+            --secondary: #ff6b6b;
+            --accent: #4ecdc4;
+            --dark: #1a2530;
+            --light: #f8f9fa;
+            --text: #2d3436;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            width: 100%;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            transform: translateX(-100%);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .nav-links a:hover:before,
+        .nav-links a.active:before {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a.active {
+            color: var(--secondary);
+            background: rgba(79, 205, 196, 0.1);
+        }
+
+        .nav-links a i {
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover i {
+            transform: translateY(-2px);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            width: 240px;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: var(--transition);
+            z-index: 100;
+            padding: 10px 0;
+        }
+
+        .nav-links li:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+
+        .dropdown li {
+            width: 100%;
+        }
+
+        .dropdown a {
+            color: var(--text);
+            padding: 14px 25px;
+            display: flex;
+            align-items: center;
+            border-radius: 0;
+        }
+
+        .dropdown a:before {
+            height: 0;
+        }
+
+        .dropdown a:hover {
+            background: linear-gradient(to right, rgba(79, 205, 196, 0.1), rgba(255, 107, 107, 0.1));
+            color: var(--secondary);
+            padding-left: 30px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--light);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box:focus-within {
+            box-shadow: 0 0 0 3px rgba(79, 205, 196, 0.3);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 5px;
+            width: 0;
+            font-size: 16px;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .search-box:hover input,
+        .search-box input:focus {
+            width: 180px;
+        }
+
+        .search-box input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .search-box button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--dark);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 26px;
+            background: var(--dark);
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:before {
+            content: '\f185';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: #ffd700;
+            position: absolute;
+            left: 5px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .theme-toggle:after {
+            content: '\f186';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: #f0f0f0;
+            position: absolute;
+            right: 5px;
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .toggle-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            transition: var(--transition);
+            left: 3px;
+        }
+
+        .theme-toggle.dark {
+            background: var(--accent);
+        }
+
+        .theme-toggle.dark .toggle-thumb {
+            left: 27px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .login-btn {
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+
+        .login-btn:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        .signup-btn {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(79, 205, 196, 0.3);
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 205, 196, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--dark);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .content {
+            padding: 40px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            width: 100%;
+            text-align: center;
+        }
+
+        .content h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .content p {
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .premium-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 1100px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                background: white;
+                height: 100vh;
+                width: 280px;
+                display: block;
+                transition: var(--transition);
+                z-index: 1000;
+                padding: 80px 30px 30px;
+                box-shadow: var(--shadow);
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .nav-links a {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease;
+                box-shadow: none;
+                background: rgba(79, 205, 196, 0.05);
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+
+            .nav-links li:hover .dropdown {
+                max-height: 500px;
+            }
+
+            .dropdown a {
+                color: var(--text);
+                justify-content: flex-start;
+                padding-left: 45px;
+            }
+
+            .dropdown a:hover {
+                padding-left: 50px;
+            }
+
+            .nav-actions {
+                margin-left: auto;
+                padding-right: 20px;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .auth-buttons {
+                display: none;
+            }
+
+            .search-box input {
+                width: 120px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .content h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .theme-toggle {
+                width: 40px;
+                height: 22px;
+            }
+
+            .theme-toggle.dark .toggle-thumb {
+                left: 19px;
+            }
+
+            .toggle-thumb {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <div class="logo-icon">MN</div>
+                    <div class="logo-text">Macro <span>Nepal</span></div>
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li>
+                        <a href="#"><i class="fas fa-briefcase"></i> Services <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="#"><i class="fas fa-laptop-code"></i> Web Development</a></li>
+                            <li><a href="#"><i class="fas fa-mobile-alt"></i> App Development</a></li>
+                            <li><a href="#"><i class="fas fa-chart-line"></i> Digital Marketing</a></li>
+                            <li><a href="#"><i class="fas fa-palette"></i> UI/UX Design</a></li>
+                            <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-cube"></i> Products <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="#"><i class="fas fa-desktop"></i> Software Solutions</a></li>
+                            <li><a href="#"><i class="fas fa-server"></i> Infrastructure</a></li>
+                            <li><a href="#"><i class="fas fa-database"></i> Data Analytics</a></li>
+                            <li><a href="#"><i class="fas fa-shield-alt"></i> Security Systems</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fas fa-users"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="theme-toggle">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                    
+                    <div class="auth-buttons">
+                        <button class="auth-btn login-btn">Login</button>
+                        <button class="auth-btn signup-btn">Sign Up</button>
+                    </div>
+                    
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="content">
+            <div class="premium-badge">PREMIUM NAVIGATION</div>
+            <h2>Experience Premium Navigation</h2>
+            <p>This premium navigation bar features smooth animations, elegant design, and advanced functionality. It includes dropdown menus, search functionality, theme switching, and is fully responsive across all devices.</p>
+            <p>Resize your browser to see the mobile-responsive design in action. The navigation transforms into a hamburger menu on smaller screens while maintaining all functionality.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            const themeToggle = document.querySelector('.theme-toggle');
+            const body = document.body;
+            
+            // Toggle mobile menu
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                
+                // Prevent body scroll when menu is open
+                if (navLinks.classList.contains('active')) {
+                    body.style.overflow = 'hidden';
+                } else {
+                    body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    // If on mobile, close the menu
+                    if (window.innerWidth <= 1100) {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        body.style.overflow = 'auto';
+                    }
+                });
+            });
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                this.classList.toggle('dark');
+                body.classList.toggle('dark-theme');
+                
+                if (body.classList.contains('dark-theme')) {
+                    // Dark theme styles
+                    document.documentElement.style.setProperty('--primary', '#1a2530');
+                    document.documentElement.style.setProperty('--dark', '#f8f9fa');
+                    document.documentElement.style.setProperty('--light', '#2d3436');
+                    document.documentElement.style.setProperty('--text', '#f8f9fa');
+                    document.querySelector('header').style.background = 'rgba(26, 37, 48, 0.95)';
+                } else {
+                    // Light theme styles
+                    document.documentElement.style.setProperty('--primary', '#2d3e50');
+                    document.documentElement.style.setProperty('--dark', '#1a2530');
+                    document.documentElement.style.setProperty('--light', '#f8f9fa');
+                    document.documentElement.style.setProperty('--text', '#2d3436');
+                    document.querySelector('header').style.background = 'rgba(255, 255, 255, 0.95)';
+                }
+            });
+            
+            // Highlight active menu item
+            const currentLocation = location.href;
+            const menuItems = document.querySelectorAll('.nav-links a');
+            
+            menuItems.forEach(item => {
+                if (item.href === currentLocation) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = event.target.closest('.nav-links');
+                const isClickInsideHamburger = event.target.closest('.hamburger');
+                
+                if (!isClickInsideNav && !isClickInsideHamburger && window.innerWidth <= 1100) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    body.style.overflow = 'auto';
+                }
+            });
+            
+            // Add animation on scroll
+            function animateOnScroll() {
+                const content = document.querySelector('.content');
+                const position = content.getBoundingClientRect();
+                
+                // If element is in viewport
+                if(position.top < window.innerHeight - 50) {
+                    content.style.opacity = 1;
+                    content.style.transform = 'translateY(0)';
+                }
+            }
+            
+            // Initially set content to be hidden
+            document.querySelector('.content').style.opacity = 0;
+            document.querySelector('.content').style.transform = 'translateY(20px)';
+            document.querySelector('.content').style.transition = 'all 0.8s ease';
+            
+            // Check on scroll and load
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+            animateOnScroll(); // Initial check
+        });
+    </script>
+</body>
+</html>
